@@ -12,7 +12,6 @@ type App struct {
 }
 
 func New() App {
-	a := 1
 	rtr := chi.NewRouter()
 	app := App{
 		rtr: rtr,
