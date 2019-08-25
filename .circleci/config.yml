@@ -1,8 +1,37 @@
+# Orb 'timakin/golangci-lint@0.1.1' resolved to 'timakin/golangci-lint@0.1.1'
 version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: circleci/golang:1.12
     steps:
       - checkout
-      - run: echo "A first hello"
+      - run:
+          command: cd go/house-server; go fmt
+      - run:
+          command: cd go/house-server; go build
+      - run:
+          command: cd go/house-server; go test
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build
+
+# Original config.yml file:
+# orbs:
+#   golangci-lint: timakin/golangci-lint@0.1.1
+# version: 2.1
+#
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/golang:1.12
+#     steps:
+#       - checkout
+#       - run: ls
+#       - run: cd go/house-server
+#       - run: ls
+#       - run: golangci-lint run
+#       - run: go build
+#       - run: go test

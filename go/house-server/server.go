@@ -26,7 +26,7 @@ func (app *App) ListenAndServe() error {
 	return http.ListenAndServe(":8080", app.rtr)
 }
 
-func (app* App) handle(w http.ResponseWriter, r *http.Request) {
+func (app *App) handle(w http.ResponseWriter, r *http.Request) {
 	if _, err := w.Write([]byte("Hello, world")); err != nil {
 		app.log.Errorf("error writing logs: %v", err)
 	}
