@@ -8,13 +8,13 @@ import (
 	"testing"
 )
 
-func TestApp_HandlesBaselineRequests_Successfully(t *testing.T) {
+func TestHouseServer_HandlesRequests_Successfully(t *testing.T) {
 	req, err := http.NewRequest("GET", "/", nil)
 	require.NoError(t, err)
 	w := httptest.NewRecorder()
 
-	app := New()
-	app.handle(w, req)
+	srv := New()
+	srv.handle(w, req)
 
 	require.Equal(t, w.Result().StatusCode, http.StatusOK)
 	body, err := ioutil.ReadAll(w.Result().Body)

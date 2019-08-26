@@ -6,15 +6,16 @@ import (
 	"net/http"
 )
 
-type App struct {
+// HouseServer defines the house-server used in this package
+type HouseServer struct {
 	rtr *chi.Mux
 	log *logrus.Logger
 }
 
-func New() App {
-	rtr := chi.NewRouter()
-	app := App{
-		rtr: rtr,
+// New creates a new house-server
+func New() HouseServer {
+	app := HouseServer{
+		rtr: chi.NewRouter(),
 		log: logrus.New(),
 	}
 	app.rtr.Get("/", app.handle)
@@ -22,12 +23,14 @@ func New() App {
 	return app
 }
 
-func (app *App) ListenAndServe() error {
-	return http.ListenAndServe(":8080", app.rtr)
+// ListenAndServe starts the server. It always returns a non-nil error
+func (srv *HouseServer) ListenAndServe() error {
+	return http.ListenAndServe(":8080", srv.rtr)
 }
 
-func (app *App) handle(w http.ResponseWriter, r *http.Request) {
+// handle does the actual handling of HTTP requests
+func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 	if _, err := w.Write([]byte("Hello, world")); err != nil {
-		app.log.Errorf("error writing logs: %v", err)
+		srv.log.Errorf("error writing logs: %v", err)
 	}
 }
