@@ -28,7 +28,7 @@ func New() AuthServer {
 		rtr: chi.NewRouter(),
 		log: logrus.New(),
 	}
-	app.rtr.Get("/auth/", app.authUser)
+	app.rtr.Get("/auth/*", app.authUser)
 
 	return app
 }

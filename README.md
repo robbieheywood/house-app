@@ -9,7 +9,9 @@ Note: this app is a vehicle for me to practice with new technologies -
 it is definitely NOT the best implementation for this and is deliberately very over-engineered.
 
 TODO:
+* Auth server talks to database
+* Cloud function acts on database
+* House server talks to auth server
 * k8s-ize Go backend
 * Something in Java
-* Something in app engine
 * Front end
