@@ -1,9 +1,9 @@
 package main
 
 import (
-"github.com/go-chi/chi"
-"github.com/sirupsen/logrus"
-"net/http"
+	"github.com/go-chi/chi"
+	"github.com/sirupsen/logrus"
+	"net/http"
 )
 
 // HouseServer defines the house-server used in this package

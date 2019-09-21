@@ -10,7 +10,7 @@ import (
 
 func TestUsersAreAuthed_Correctly(t *testing.T) {
 	tests := []struct {
-		name string
+		name       string
 		expectPass bool
 	}{
 		{"robbie", true},
@@ -36,4 +36,3 @@ func TestUsersAreAuthed_Correctly(t *testing.T) {
 		})
 	}
 }
-
