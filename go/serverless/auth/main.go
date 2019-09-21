@@ -1,8 +1,6 @@
 package main
 
-import (
-	"os"
-)
+import "os"
 
 func main() {
 	srv := New()
@@ -11,4 +9,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
