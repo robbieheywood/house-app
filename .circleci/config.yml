@@ -7,5 +7,6 @@ jobs:
     steps:
       - checkout
       - run: cd go/house-server; go run github.com/golangci/golangci-lint/cmd/golangci-lint run
-      - run: cd go/house-server; go build
-      - run: cd go/house-server; go test
+      - run: cd go/serverless/auth; go run github.com/golangci/golangci-lint/cmd/golangci-lint run
+      - run: cd go; go build ./...
+      - run: cd go; go test ./...
