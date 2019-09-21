@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -9,8 +8,8 @@ import (
 
 // HouseServer defines the house-server used in this package
 type HouseServer struct {
-	rtr *chi.Mux
-	log *logrus.Logger
+	rtr              *chi.Mux
+	log              *logrus.Logger
 	callAuthEndpoint func(user string) (resp *http.Response, err error)
 }
 
@@ -21,8 +20,8 @@ func New(authEndpoint string) HouseServer {
 	}
 
 	app := HouseServer{
-		rtr: chi.NewRouter(),
-		log: logrus.New(),
+		rtr:              chi.NewRouter(),
+		log:              logrus.New(),
 		callAuthEndpoint: callAuthEndpoint,
 	}
 	app.rtr.Get("/", app.handle)
@@ -46,10 +45,7 @@ func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(user)
 	resp, err := srv.callAuthEndpoint(user[0])
-	fmt.Println(resp.StatusCode)
-	fmt.Println(err)
 	if err != nil {
 		http.Error(w, "error authorizing user", http.StatusUnauthorized)
 		return
@@ -61,7 +57,6 @@ func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 	if _, err := w.Write([]byte("Hello, world")); err != nil {
 		http.Error(w, "error writing response", http.StatusInternalServerError)
 		return
-		srv.log.Errorf("error writing logs: %v", err)
 	}
 }
 

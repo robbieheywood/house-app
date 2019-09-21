@@ -12,15 +12,15 @@ import (
 func TestChecksAuth_Correctly(t *testing.T) {
 	tests := []struct {
 		name string
+		user string
 	}{
-		{"robbie"},
-		{"wobbie"},
-		{""},
+		{name: "authoized user", user: "robbie"},
+		{name: "unauthorized user", user: "wobbie"},
+		{name: "empty user", user: ""},
 	}
 
 	req, err := http.NewRequest("GET", "/", nil)
 	require.NoError(t, err)
-	w := httptest.NewRecorder()
 
 	fakeAuthCall := func(user string) (*http.Response, error) {
 		if user == "robbie" {
@@ -31,17 +31,22 @@ func TestChecksAuth_Correctly(t *testing.T) {
 	}
 
 	srv := HouseServer{
-		rtr: chi.NewRouter(),
-		log: logrus.New(),
+		rtr:              chi.NewRouter(),
+		log:              logrus.New(),
 		callAuthEndpoint: fakeAuthCall,
 	}
 	srv.rtr.Get("/", srv.handle)
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			if test.user != "" {
+				req.Header["User"] = []string{test.user}
+			}
+
 			srv.handle(w, req)
 
-			if test.name == "robbie" {
+			if test.user == "robbie" {
 				require.Equal(t, w.Result().StatusCode, http.StatusOK)
 			} else {
 				require.Equal(t, w.Result().StatusCode, http.StatusUnauthorized)
