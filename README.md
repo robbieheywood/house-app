@@ -9,9 +9,16 @@ Note: this app is a vehicle for me to practice with new technologies -
 it is definitely NOT the best implementation for this and is deliberately very over-engineered.
 
 TODO:
+* Sort gcloud auth
+* Move to go-cloud
+* Sort rollout with env variables
+* DB allows capitals
+* DB testing
 * Auth server talks to database
 * Cloud function acts on database
 * House server talks to auth server
 * k8s-ize Go backend
 * Something in Java
 * Front end
+* Add redis, nginx
+* Allow moving to AWS

@@ -9,11 +9,6 @@ import (
 )
 
 // @@@ SORT AUTH - CURRENTLY HAVE TO RUN gcloud auth application-default login TO SET THE DEFAULT AUTH
-// @@@ ALLOW CAPITALS
-// @@@ ADD TESTING
-// @@@ SORT ROLLOUT AND ENV VARIABLES
-// @@@ MOVE TO GO-CLOUD
-// @@@ MOVE TO SINGLE GO MODULE
 
 func main() {
 	datastoreName := "user=postgres password=157AbbeyRoad dbname=postgres host=tensile-imprint-156310" +

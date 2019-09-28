@@ -1,6 +1,9 @@
 #!/bin/bash
 
+# Rollout serverless app to app-engine
+
 set -o nounset
+set -o pipefail
 set -o errexit
 
 # Ensure that the environment variable $HOUSE-APP-CONNECTION has the postgres db connection details &
@@ -9,6 +12,6 @@ HOUSE-APP-CONNECTION = user=postgres password=157AbbeyRoad dbname=house-users ho
 GOOGLE_APPLICATION_CREDENTIALS =
 
 # Rollout auth server
-cd go/serverless/auth
+cd go/serverless
 gcloud app versions start v1 @@@ ADD ENV VARIABLE
 gcloud app deploy --version v1
