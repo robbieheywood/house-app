@@ -9,11 +9,11 @@ Note: this app is a vehicle for me to practice with new technologies -
 it is definitely NOT the best implementation for this and is deliberately very over-engineered.
 
 TODO:
-* Sort gcloud auth
+* Use SQL builder
+* Sort gcloud auth (gcloud auth application-default login)
 * Move to go-cloud
 * Sort rollout with env variables
 * DB allows capitals
-* DB testing
 * Auth server talks to database
 * Cloud function acts on database
 * House server talks to auth server

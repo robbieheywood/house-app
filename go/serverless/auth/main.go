@@ -8,11 +8,9 @@ import (
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
 )
 
-// @@@ SORT AUTH - CURRENTLY HAVE TO RUN gcloud auth application-default login TO SET THE DEFAULT AUTH
-
 func main() {
 	datastoreName := "user=postgres password=157AbbeyRoad dbname=postgres host=tensile-imprint-156310" +
-		":europe-west1:house-users sslmode=disable"//os.Getenv("POSTGRES_CONNECTION")
+		":europe-west1:house-users sslmode=disable" //os.Getenv("POSTGRES_CONNECTION")
 
 	db, err := sql.Open("cloudsqlpostgres", datastoreName)
 	if err != nil {
@@ -33,5 +31,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
-
