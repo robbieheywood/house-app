@@ -13,11 +13,12 @@ require (
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
+	github.com/golangci/golangci-lint v1.19.1 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/sirupsen/logrus v1.4.2
-	github.com/stretchr/testify v1.2.2
+	github.com/stretchr/testify v1.4.0
 )

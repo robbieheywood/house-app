@@ -22,7 +22,7 @@ func New(db *sql.DB) AuthServer {
 	app := AuthServer{
 		rtr: chi.NewRouter(),
 		log: logrus.New(),
-		db: db,
+		db:  db,
 	}
 	app.rtr.Get("/auth/*", app.authUser)
 
