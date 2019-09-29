@@ -1,28 +1,25 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"
-	"net/http"
 )
 
 // HouseServer defines the house-server used in this package
 type HouseServer struct {
-	rtr              *chi.Mux
-	log              *logrus.Logger
-	callAuthEndpoint func(user string) (resp *http.Response, err error)
+	rtr          *chi.Mux
+	log          *logrus.Logger
+	authEndpoint string
 }
 
 // New creates a new house-server
 func New(authEndpoint string) HouseServer {
-	callAuthEndpoint := func(user string) (resp *http.Response, err error) {
-		return http.Get(authEndpoint + user)
-	}
-
 	app := HouseServer{
-		rtr:              chi.NewRouter(),
-		log:              logrus.New(),
-		callAuthEndpoint: callAuthEndpoint,
+		rtr:          chi.NewRouter(),
+		log:          logrus.New(),
+		authEndpoint: authEndpoint,
 	}
 	app.rtr.Get("/", app.handle)
 
@@ -45,7 +42,7 @@ func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := srv.callAuthEndpoint(user[0])
+	resp, err := http.Get(srv.authEndpoint + user[0])
 	if err != nil {
 		http.Error(w, "error authorizing user", http.StatusUnauthorized)
 		return

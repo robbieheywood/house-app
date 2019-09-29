@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/go-chi/chi"
-	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/require"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/go-chi/chi"
+	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/require"
 )
 
 func TestChecksAuth_Correctly(t *testing.T) {
@@ -19,35 +21,37 @@ func TestChecksAuth_Correctly(t *testing.T) {
 		{name: "empty user", user: ""},
 	}
 
-	req, err := http.NewRequest("GET", "/", nil)
-	require.NoError(t, err)
-
-	fakeAuthCall := func(user string) (*http.Response, error) {
-		if user == "robbie" {
-			return &http.Response{StatusCode: http.StatusOK}, nil
-		} else {
-			return &http.Response{StatusCode: http.StatusUnauthorized}, nil
+	fakeAuth := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(r.URL.Path)
+		if r.URL.Path != "/auth/robbie" {
+			http.Error(w, "User not recognised", http.StatusUnauthorized)
 		}
-	}
+	}))
+	defer fakeAuth.Close()
+	fmt.Println(fakeAuth.URL)
 
 	srv := HouseServer{
-		rtr:              chi.NewRouter(),
-		log:              logrus.New(),
-		callAuthEndpoint: fakeAuthCall,
+		rtr:          chi.NewRouter(),
+		log:          logrus.New(),
+		authEndpoint: fakeAuth.URL + "/auth/",
 	}
 	srv.rtr.Get("/", srv.handle)
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			w := httptest.NewRecorder()
+			req, err := http.NewRequest("GET", "/", nil)
+			require.NoError(t, err)
 			if test.user != "" {
 				req.Header["User"] = []string{test.user}
 			}
 
+			w := httptest.NewRecorder()
 			srv.handle(w, req)
 
 			if test.user == "robbie" {
 				require.Equal(t, w.Result().StatusCode, http.StatusOK)
+			} else if test.user == "" {
+				require.Equal(t, w.Result().StatusCode, http.StatusBadRequest)
 			} else {
 				require.Equal(t, w.Result().StatusCode, http.StatusUnauthorized)
 			}

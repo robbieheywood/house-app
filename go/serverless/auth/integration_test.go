@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/cenkalti/backoff"
 
 	_ "github.com/lib/pq"
@@ -81,6 +82,7 @@ func setupTestDB(t *testing.T, port string) *sql.DB {
 	}, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 5))
 	require.NoError(t, err)
 
+	sq.Create
 	_, err = db.Exec("CREATE Table users (name VARCHAR(255), id SERIAL PRIMARY KEY)")
 	require.NoError(t, err)
 	_, err = db.Exec("INSERT INTO users (name) values ('robbie')")
