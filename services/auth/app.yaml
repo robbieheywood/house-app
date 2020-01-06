@@ -1,0 +1,13 @@
+runtime: go112
+
+env_variables:
+  GCP_POSTGRES_USER: "postgres"
+  GCP_POSTGRES_PASSWORD: "157AbbeyRoad"
+  GCP_POSTGRES_PROJECT: "tensile-imprint-156310"
+  GCP_POSTGRES_REGION: "europe-west1"
+  GCP_POSTGRES_INSTANCE: "house-app"
+  GCP_POSTGRES_DB_NAME: "postgres"
+
+handlers:
+- url: /.*
+  script: auto

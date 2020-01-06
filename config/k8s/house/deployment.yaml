@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: house
+spec:
+  selector:
+    matchLabels:
+      app: house
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: house
+    spec:
+      containers:
+      - name: house
+        image: eu.gcr.io/tensile-imprint-156310/house-server:05012020-0
+        ports:
+        - containerPort: 8080
