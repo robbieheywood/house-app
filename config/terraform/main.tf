@@ -15,11 +15,12 @@ provider "google" {
 
   project = var.project
   region  = var.region
+  zone    = var.zone
 }
 
-resource "google_container_cluster" "primary-cluster" {
-  name               = "gke-${var.region}-1"
-  location           = var.region
+resource "google_container_cluster" "primary_cluster" {
+  name               = "${var.zone}-1"
+  location           = var.zone
 
   # Use node pool specified below instead of the default node pool
   remove_default_node_pool = true
@@ -35,20 +36,21 @@ resource "google_container_cluster" "primary-cluster" {
   }
 }
 
-resource "google_container_node_pool" "primary-nodes" {
-  name       = "gke-${var.region}-nodes-1"
-  location   = var.region
-  cluster    = google_container_cluster.primary-cluster.name
-  node_count = 2
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "${var.zone}-nodes-1"
+  location   = google_container_cluster.primary_cluster.location
+  cluster    = google_container_cluster.primary_cluster.name
+  node_count = 4
 
   node_config {
     # Use preemptible nodes as they are cheaper
     preemptible  = true
-    machine_type = "n1-standard-1"
+    machine_type = "n1-standard-2"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.read_only",
     ]
   }
 }

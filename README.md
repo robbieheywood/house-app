@@ -23,21 +23,22 @@ Then follow these steps:
 
 ## Status
 
-* House-server prints hello-world from 
+* House-server prints hello-world when accessed via load-balancer service with basic auth.
 
-TODO:
+* Sort tracing CRDs too long
+
+TODO (Short term):
 * Fix build
-* Sort gcloud auth (gcloud auth application-default login)
-* Sort rollout with env variables
+* Move DB password out of plain text in repo
 * DB allows capitals
-
+* Move DB to terraform with setup script
 * Add license
-* Setup logs and metrics and dashboard
-* Cloud function acts on database
-* k8s-ize Go backend + rollout to GKE
-* Something in Java (& recap)
-* Front end (& look into CSS + HTML + React/Redis)
-* Add pub/sub
-* Add redis (+ look into it and redisearch)
-* Add nginx (+ look into it)
-* Allow moving to AWS
+
+* Logs, metrics, tracing, service-mesh, local k8s, databases, proxies
+
+TODO (Long term):
+* Sort running on AWS
+* Add a cloud function to act on database (once a day check 'robbie' exists)
+* Add something using pubsub
+* Add something in Java
+* Add a front end thing (& look into CSS + HTML + React/Redux)

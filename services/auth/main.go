@@ -15,12 +15,22 @@ import (
 )
 
 var port uint
+var postgresUser, postgresPassword, postgresProject, postgresRegion, postgresInstance, postgresDB string
 
 func init() {
 	flag.UintVar(&port, "port", 8080, "port for the server to listen on")
+	flag.StringVar(&postgresUser, "postgres_user", getenvWithDefault("GCP_POSTGRES_USER", "postgres"),
+		"user for the postgres database")
+	flag.StringVar(&postgresPassword, "postgres_password", getenvWithDefault("GCP_POSTGRES_PASSWORD", ""), "password for the postgres user")
+	flag.StringVar(&postgresProject, "postgres_project", getenvWithDefault("GCP_POSTGRES_PROJECT", "tensile-imprint-156310"), "GCP project the GCP instance is in")
+	flag.StringVar(&postgresRegion, "postgres_region", getenvWithDefault("GCP_POSTGRES_REGION", "europe-west1"), "region the postgres database is in")
+	flag.StringVar(&postgresInstance, "postgres_instance", getenvWithDefault("GCP_POSTGRES_INSTANCE", "house-app"), "postgres database instance to query")
+	flag.StringVar(&postgresDB, "postgres_db", getenvWithDefault("GCP_POSTGRES_DB_NAME", "postgres"), "name of the postgres database to query")
 }
 
 func main() {
+	flag.Parse()
+
 	dbURL, err := makeURLFromEnvVars()
 	if err != nil {
 		log.Fatalf("failed to obtain URL for database: %v", err)
@@ -44,35 +54,37 @@ func main() {
 	}
 }
 
+func getenvWithDefault(env, def string) string {
+	val := os.Getenv(env)
+	if val != "" {
+		return val
+	}
+	return def
+}
+
 func makeURLFromEnvVars() (*url.URL, error) {
-	user := os.Getenv("GCP_POSTGRES_USER")
-	if user == "" {
+	if postgresUser == "" {
 		return nil, fmt.Errorf("no user specified")
 	}
-	password := os.Getenv("GCP_POSTGRES_PASSWORD")
-	if user == "" {
+	if postgresPassword == "" {
 		return nil, fmt.Errorf("no user password specified")
 	}
-	project := os.Getenv("GCP_POSTGRES_PROJECT")
-	if user == "" {
+	if postgresProject == "" {
 		return nil, fmt.Errorf("no project specified")
 	}
-	region := os.Getenv("GCP_POSTGRES_REGION")
-	if user == "" {
+	if postgresRegion == "" {
 		return nil, fmt.Errorf("no region specified")
 	}
-	instanceName := os.Getenv("GCP_POSTGRES_INSTANCE")
-	if user == "" {
+	if postgresInstance == "" {
 		return nil, fmt.Errorf("no intsance specified")
 	}
-	dbName := os.Getenv("GCP_POSTGRES_DB_NAME")
-	if user == "" {
+	if postgresDB == "" {
 		return nil, fmt.Errorf("no database name specified")
 	}
 	return &url.URL{
 		Scheme: "gcppostgres",
-		User:   url.UserPassword(user, password),
-		Host:   project,
-		Path:   fmt.Sprintf("%s/%s/%s", region, instanceName, dbName),
+		User:   url.UserPassword(postgresUser, postgresPassword),
+		Host:   postgresProject,
+		Path:   fmt.Sprintf("%s/%s/%s", postgresRegion, postgresInstance, postgresDB),
 	}, nil
 }

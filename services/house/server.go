@@ -36,18 +36,16 @@ func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 	// The logging here is deliberately overzealous to work the logging pipeline
 	srv.logger.Info("Handling request")
 
-	user, ok := r.Header["User"]
+	// Auth check is ridiculously basic so don't need to extract password
+	user, _, ok := r.BasicAuth()
 	if !ok {
 		http.Error(w, "no user found in request", http.StatusBadRequest)
 		return
-	} else if len(user) != 1 {
-		http.Error(w, "request must only specify 1 user", http.StatusBadRequest)
-		return
 	}
-	srv.logger.Info("Extracted user %v from request", user[0])
+	srv.logger.Infof("Extracted user %v from request", user)
 
 	// For now, all we do is check that the user exists with the auth endpoint
-	resp, err := http.Get(srv.authEndpoint + user[0])
+	resp, err := http.Get(srv.authEndpoint + user)
 	if err != nil {
 		http.Error(w, "error authorizing user", http.StatusUnauthorized)
 		return
@@ -55,7 +53,7 @@ func (srv *HouseServer) handle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user not authorized", resp.StatusCode)
 		return
 	}
-	srv.logger.Info("User %v is authorized", user)
+	srv.logger.Infof("User %v is authorized", user)
 
 	if _, err := w.Write([]byte("Hello, world")); err != nil {
 		http.Error(w, "error writing response", http.StatusInternalServerError)

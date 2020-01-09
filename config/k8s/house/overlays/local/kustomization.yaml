@@ -1,0 +1,10 @@
+resources:
+- ../../base
+secretGenerator:
+- name: app-tls
+  files:
+  - secret/tls.cert
+  - secret/tls.key
+  type: "docker-registry"
+patches:
+-  image_pull_secret.yaml

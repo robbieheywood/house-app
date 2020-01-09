@@ -11,3 +11,5 @@ Build image: `DOCKER_BUILDKIT=1; docker build $REPO -f $REPO/services/house/Dock
 Run container locally: `docker run -p 8080:8080 eu.gcr.io/tensile-imprint-156310/house:$TAG`
 
 Push image: `docker push eu.gcr.io/tensile-imprint-156310/house:$TAG`
+
+Hit service: `curl http://robbie:test@$SERVICE_IP:8080` - you should receive a 'Hello, world' reply

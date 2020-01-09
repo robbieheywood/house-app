@@ -1,0 +1,4 @@
+resources:
+- crds-all-in-one.yaml
+- elasticsearch.yaml
+- kibana.yaml

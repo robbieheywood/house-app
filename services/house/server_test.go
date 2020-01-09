@@ -32,14 +32,14 @@ func TestChecksAuth_Correctly(t *testing.T) {
 
 	logger, err := zap.NewProduction()
 	require.NoError(t, err)
-	srv := New(fakeAuth.URL+"/auth/", 8080, logger)
+	srv := New(fakeAuth.URL+"/auth/", 8080, logger.Sugar())
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			req, err := http.NewRequest("GET", "/", nil)
 			require.NoError(t, err)
 			if test.user != "" {
-				req.Header["User"] = []string{test.user}
+				req.SetBasicAuth(test.user, "password-is-not-used")
 			}
 
 			w := httptest.NewRecorder()
