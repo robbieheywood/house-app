@@ -25,7 +25,7 @@ Then follow these steps:
 
 * House-server prints hello-world when accessed via load-balancer service with basic auth.
 
-* Sort tracing CRDs too long
+* Fix tracing
 
 TODO (Short term):
 * Fix build

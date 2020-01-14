@@ -1,0 +1,8 @@
+prometheus:
+  additionalServiceMonitors:
+  - name: "house"
+    selector:
+      matchLabels:
+        app: "house"
+    endpoints:
+    - targerPort: 8080

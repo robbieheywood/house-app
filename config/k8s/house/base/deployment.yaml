@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: house
-        image: eu.gcr.io/tensile-imprint-156310/house:08012020_0
+        image: eu.gcr.io/tensile-imprint-156310/house:11012020-3
         ports:
         - containerPort: 8080
         resources:
@@ -24,3 +24,11 @@ spec:
           requests:
             cpu: 100m
             memory: 200Mi
+        env:
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
+

@@ -1,15 +1,23 @@
 apiVersion: jaegertracing.io/v1
 kind: Jaeger
 metadata:
-  name: simplest
+  name: jaeger
 spec:
   strategy: production
+  agent:
+      strategy: DaemonSet
   storage:
     type: elasticsearch
     options:
       es:
-        server-urls: https://elastic:${}@elasticsearch-es-http.default.svc.cluster.local:9200
+        server-urls: https://elasticsearch-es-http.default.svc.cluster.local:9200
+        tls:
+          skip-host-verify: true
+    secretName: jaeger-secret
     esIndexCleaner:
         enabled: true
         numberOfDays: 3
         schedule: "0 0 * * * "
+
+
+
