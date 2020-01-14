@@ -51,6 +51,9 @@ func main() {
 	}
 
 	tracer, closer, err := cfg.NewTracer(jaegercfg.Logger(jaegerlog.StdLogger))
+	if err != nil {
+		log.Fatalf("error initialising Jaeger tracer: %v", err)
+	}
 	opentracing.SetGlobalTracer(tracer)
 	defer closer.Close()
 
